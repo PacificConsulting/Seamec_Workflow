@@ -28,23 +28,58 @@ pageextension 50300 RFQ_Card_Ext extends "RFQ Card"
                 {
                     ApplicationArea = Basic, Suite;
                     Caption = 'Send A&pproval Request';
-                    //Enabled = NOT OpenApprovalEntriesExist AND CanRequestApprovalForFlow;
+                    Enabled = NOT OpenApprovalEntriesExist AND CanRequestApproavlForFlow;
                     Image = SendApprovalRequest;
                     ToolTip = 'Request approval of the document.';
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    PromotedOnly = true;
 
                     trigger OnAction()
                     var
-                        ApprovalsMgmt: Codeunit "Approvals Mgmt.";
                     begin
-                        //         if ApprovalsMgmt.check
-                        //           ApprovalsMgmt.OnSendSalesDocForApproval(Rec);
+                        if ApprovalsMgmtCut.CheckRFQApprovalWorkflowEnable(Rec) then
+                            ApprovalsMgmtCut.OnSendRFQForApproval(Rec);
+                    end;
+                }
+                action(CancelApprovalRequest)
+                {
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Cancel A&pproval Request';
+                    Enabled = NOT OpenApprovalEntriesExist AND CanRequestApproavlForFlow;
+                    Image = CancelApprovalRequest;
+                    ToolTip = 'Request approval of the document.';
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    PromotedOnly = true;
+
+                    trigger OnAction()
+                    var
+                    begin
+                        ApprovalsMgmtCut.OnSendRFQForApproval(Rec);
                     end;
                 }
             }
         }
+
     }
+    trigger OnAfterGetRecord()
+    begin
+        OpenApprovalEntriesExistForCurrUser := ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(RecordID);
+        OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(RecordID);
+        CanCancelApprovalForRecord := ApprovalsMgmt.CanCancelApprovalForRecord(RecordID);
+        WorkflowWebhookMgt.GetCanRequestAndCanCancel(RecordID, CanRequestApproavlForFlow, CanCancelApprovalForFlow);
+    end;
 
     var
         ApprovalsMgmt: Codeunit 1535;
+        ApprovalsMgmtCut: Codeunit 50300;
+        WorkflowWebhookMgt: Codeunit 1543;
+        OpenApprovalEntriesExistForCurrUser: Boolean;
+        OpenApprovalEntriesExist: Boolean;
+        CanCancelApprovalForRecord: Boolean;
+        CanCancelApprovalForFlow: Boolean;
+        CanRequestApproavlForFlow: Boolean;
+
         RecordID: RecordId;
 }
