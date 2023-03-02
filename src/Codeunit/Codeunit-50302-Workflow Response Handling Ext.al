@@ -56,6 +56,31 @@ codeunit 50302 "Workflow Response Handling Ext"
         end;
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Workflow Response Handling", 'OnAddWorkflowResponsePredecessorsToLibrary', '', true, true)]
+    local procedure OnAddWorkflowResponsePredecessorsToLibrary(ResponseFunctionName: Code[128])
+    var
+        WorkflowResponseHandling: Codeunit 1521;
+        WorkflowEventHandlingCust: Codeunit 50301;
+    begin
+        case ResponseFunctionName of
+            WorkflowResponseHandling.SetStatusToPendingApprovalCode():
+                WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.SetStatusToPendingApprovalCode(),
+                    WorkflowEventHandlingCust.RunWorkflowOnSendRFQForApprovalCode());
+
+            WorkflowResponseHandling.SendApprovalRequestForApprovalCode():
+                WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.SendApprovalRequestForApprovalCode(),
+                    WorkflowEventHandlingCust.RunWorkflowOnSendRFQForApprovalCode());
+
+            WorkflowResponseHandling.CancelAllApprovalRequestsCode():
+                WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CancelAllApprovalRequestsCode(),
+                    WorkflowEventHandlingCust.RunWorkflowOnCancelRFQApprovalCode());
+
+            WorkflowResponseHandling.OpenDocumentCode():
+                WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.OpenDocumentCode(),
+                    WorkflowEventHandlingCust.RunWorkflowOnCancelRFQApprovalCode());
+
+        end;
+    end;
 
     var
         myInt: Integer;

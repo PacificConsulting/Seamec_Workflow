@@ -37,14 +37,17 @@ codeunit 50300 "Approval Mgmt Ext."
     local procedure OnPopulateApprovalEntryArgument(var RecRef: RecordRef; var ApprovalEntryArgument: Record "Approval Entry";
                     WorkflowStepInstance: Record "Workflow Step Instance")
     var
-    RFQ:record "RFQ Header";
+        RFQ: record "RFQ Header";
     begin
-        case
+        case RecRef.Number of
+            database::"RFQ Header":
+                begin
+                    RecRef.SetTable(RFQ);
+                    ApprovalEntryArgument."Document No." := RFQ."Document No.";
+                end;
+
         end;
     end;
-
-
-
 
     var
         NoworkFlowEnableErr: TextConst ENU = 'No approval workflow for this record type is enabled.';
