@@ -19,14 +19,37 @@ pageextension 50300 RFQ_Card_Ext extends "RFQ Card"
                     PromotedCategory = process;
                     PromotedIsBig = true;
                     PromotedOnly = true;
+                    ApplicationArea = All;
                     trigger OnAction()
                     begin
                         ApprovalsMgmt.ApproveRecordApprovalRequest(RecordID);
                     end;
                 }
+                action(Reopen)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Reopen';
+                    Image = ReOpen;
+                    // ToolTip = 'Request approval of the document.';
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    PromotedOnly = true;
+                    trigger OnAction()
+                    var
+                        RecRFQ: Record "RFQ Header";
+                    begin
+                        RecRFQ.Reset();
+                        RecRFQ.SetRange("No.", rec."No.");
+                        RecRFQ.SetRange("Approval Status", RecRFQ."Approval Status"::Released);
+                        IF RecRFQ.FindFirst() then begin
+                            RecRFQ."Approval Status" := RecRFQ."Approval Status"::Open;
+                            RecRFQ.Modify();
+                        end;
+                    end;
+                }
                 action(SendApprovalRequest)
                 {
-                    ApplicationArea = Basic, Suite;
+                    ApplicationArea = All;
                     Caption = 'Send A&pproval Request';
                     Enabled = NOT OpenApprovalEntriesExist AND CanRequestApproavlForFlow;
                     Image = SendApprovalRequest;
@@ -44,7 +67,7 @@ pageextension 50300 RFQ_Card_Ext extends "RFQ Card"
                 }
                 action(CancelApprovalRequest)
                 {
-                    ApplicationArea = Basic, Suite;
+                    ApplicationArea = All;
                     Caption = 'Cancel A&pproval Request';
                     Enabled = NOT OpenApprovalEntriesExist AND CanRequestApproavlForFlow;
                     Image = CancelApprovalRequest;
@@ -56,7 +79,7 @@ pageextension 50300 RFQ_Card_Ext extends "RFQ Card"
                     trigger OnAction()
                     var
                     begin
-                        ApprovalsMgmtCut.OnSendRFQForApproval(Rec);
+                        ApprovalsMgmtCut.OnCancelRFQForApproval(rec);
                     end;
                 }
             }
@@ -80,6 +103,6 @@ pageextension 50300 RFQ_Card_Ext extends "RFQ Card"
         CanCancelApprovalForRecord: Boolean;
         CanCancelApprovalForFlow: Boolean;
         CanRequestApproavlForFlow: Boolean;
-
         RecordID: RecordId;
+
 }

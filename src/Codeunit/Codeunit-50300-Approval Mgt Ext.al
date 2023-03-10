@@ -43,7 +43,7 @@ codeunit 50300 "Approval Mgmt Ext."
             database::"RFQ Header":
                 begin
                     RecRef.SetTable(RFQ);
-                    ApprovalEntryArgument."Document No." := RFQ."Document No.";
+                    ApprovalEntryArgument."Document No." := RFQ."No.";
                 end;
 
         end;
