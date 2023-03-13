@@ -47,21 +47,27 @@ codeunit 50303 "Workflow Setup Ext"
         WorkflowSetup.PopulateWorkflowStepArgument(WorkflowStepArgument, WorkflowStepArgument."Approver Type"::Approver,
                             WorkflowStepArgument."Approver Limit Type"::"Direct Approver", 0, '', BlankDateFormula, true);
         */
+
+        //New Function Ass BC Suggested temp Commnented
         WorkflowSetup.InitWorkflowStepArgument(WorkflowStepArgument, WorkflowStepArgument."Approver Type"::Approver,
-                            WorkflowStepArgument."Approver Limit Type"::"Direct Approver", 0, '', BlankDateFormula, true);
+                            WorkflowStepArgument."Approver Limit Type"::"Approver Chain", 0, '', BlankDateFormula, true);
+
 
 
         WorkflowSetup.InsertDocApprovalWorkflowSteps(
             Workflow,
-            BuildClaimTypeConditions(RFQ."Approval Status"::Open),
+            BuildRFQTypeConditions(RFQ."Approval Status"::Open),
             WorkflowEventHandlingCust.RunWorkflowOnSendRFQForApprovalCode(),
-            BuildClaimTypeConditions(RFQ."Approval Status"::"Pending Approval"),
+            BuildRFQTypeConditions(RFQ."Approval Status"::"Pending Approval"),
             WorkflowEventHandlingCust.RunWorkflowOnCancelRFQApprovalCode(),
             WorkflowStepArgument,
             true);
+
+
+
     end;
 
-    local procedure BuildClaimTypeConditions(Status: Integer): text
+    local procedure BuildRFQTypeConditions(Status: Integer): text
     var
         RFQ: record "RFQ Header";
     begin

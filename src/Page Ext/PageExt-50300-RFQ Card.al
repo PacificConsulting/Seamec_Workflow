@@ -22,7 +22,7 @@ pageextension 50300 RFQ_Card_Ext extends "RFQ Card"
                     ApplicationArea = All;
                     trigger OnAction()
                     begin
-                        ApprovalsMgmt.ApproveRecordApprovalRequest(RecordID);
+                        ApprovalsMgmt.ApproveRecordApprovalRequest(Rec.RecordId);
                     end;
                 }
                 action(Reopen)
@@ -88,10 +88,10 @@ pageextension 50300 RFQ_Card_Ext extends "RFQ Card"
     }
     trigger OnAfterGetRecord()
     begin
-        OpenApprovalEntriesExistForCurrUser := ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(RecordID);
-        OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(RecordID);
-        CanCancelApprovalForRecord := ApprovalsMgmt.CanCancelApprovalForRecord(RecordID);
-        WorkflowWebhookMgt.GetCanRequestAndCanCancel(RecordID, CanRequestApproavlForFlow, CanCancelApprovalForFlow);
+        OpenApprovalEntriesExistForCurrUser := ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
+        OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
+        CanCancelApprovalForRecord := ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
+        WorkflowWebhookMgt.GetCanRequestAndCanCancel(Rec.RecordId, CanRequestApproavlForFlow, CanCancelApprovalForFlow);
     end;
 
     var
@@ -103,6 +103,6 @@ pageextension 50300 RFQ_Card_Ext extends "RFQ Card"
         CanCancelApprovalForRecord: Boolean;
         CanCancelApprovalForFlow: Boolean;
         CanRequestApproavlForFlow: Boolean;
-        RecordID: RecordId;
+    //  RecordID: RecordId;
 
 }
