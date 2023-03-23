@@ -52,7 +52,6 @@ codeunit 50302 "Workflow Response Handling Ext"
                     RFQ.Modify();
                     IsHandled := true;
                 end;
-
         end;
     end;
 

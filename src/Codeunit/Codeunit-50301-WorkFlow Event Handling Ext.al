@@ -24,7 +24,6 @@ codeunit 50301 "Workflow Event Handling Ext"
             WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode:
                 WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode, RunWorkflowOnSendRFQForApprovalCode);
 
-
         end;
     end;
 

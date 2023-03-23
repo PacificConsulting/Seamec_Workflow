@@ -50,7 +50,7 @@ codeunit 50303 "Workflow Setup Ext"
 
         //New Function Ass BC Suggested temp Commnented
         WorkflowSetup.InitWorkflowStepArgument(WorkflowStepArgument, WorkflowStepArgument."Approver Type"::Approver,
-                            WorkflowStepArgument."Approver Limit Type"::"Approver Chain", 0, '', BlankDateFormula, true);
+                            WorkflowStepArgument."Approver Limit Type"::"Direct Approver", 0, '', BlankDateFormula, true);
 
 
 

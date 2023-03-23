@@ -45,9 +45,25 @@ codeunit 50300 "Approval Mgmt Ext."
                     RecRef.SetTable(RFQ);
                     ApprovalEntryArgument."Document No." := RFQ."No.";
                 end;
-
         end;
     end;
+
+
+    //PCPL-NSW  Craete this event to flow Amount of RFQ table to Default field of Approval entry amount.
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnBeforeApprovalEntryInsert', '', true, true)]
+    local procedure OnBeforeApprovalEntryInsert(var ApprovalEntry: Record "Approval Entry"; ApprovalEntryArgument: Record "Approval Entry"; WorkflowStepArgument: Record "Workflow Step Argument"; ApproverId: Code[50]; var IsHandled: Boolean)
+    var
+        RFQ: Record "RFQ Header";
+    begin
+        RFQ.Reset();
+        RFQ.SetRange("No.", ApprovalEntry."Document No.");
+        IF RFQ.FindFirst() then begin
+            RFQ.CalcFields("Total Amount");
+            ApprovalEntry.Amount := RFQ."Total Amount";
+            ApprovalEntry."Amount (LCY)" := RFQ."Total Amount";
+        end;
+    end;
+
 
     var
         NoworkFlowEnableErr: TextConst ENU = 'No approval workflow for this record type is enabled.';
