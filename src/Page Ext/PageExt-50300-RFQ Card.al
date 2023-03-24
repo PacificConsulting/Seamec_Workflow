@@ -91,7 +91,7 @@ pageextension 50300 RFQ_Card_Ext extends "RFQ Card"
                     begin
                         if ApprovalsMgmtCut.CheckRFQApprovalWorkflowEnable(Rec) then
                             ApprovalsMgmtCut.OnSendRFQForApproval(Rec);
-
+                        //
                         //  IF rec."Approval Status" = rec."Approval Status"::"Pending Approval" then begin
                         // AppEntr.Reset();
                         // AppEntr.SetRange("Document No.", Rec."No.");
