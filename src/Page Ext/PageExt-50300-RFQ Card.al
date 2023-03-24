@@ -13,7 +13,7 @@ pageextension 50300 RFQ_Card_Ext extends "RFQ Card"
             {
                 action(Approve)
                 {
-                    Visible = true;
+                    Visible = false;        //PCPL-25/240323
                     image = Approval;
                     Promoted = true;
                     PromotedCategory = process;
@@ -33,6 +33,7 @@ pageextension 50300 RFQ_Card_Ext extends "RFQ Card"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedOnly = true;
+                    Visible = false;        //PCPL-25/240323
                     trigger OnAction()
                     var
                         RecRFQ: Record "RFQ Header";
@@ -54,6 +55,7 @@ pageextension 50300 RFQ_Card_Ext extends "RFQ Card"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedOnly = true;
+                    Visible = false;        //PCPL-25/240323
                     trigger OnAction()
                     var
                         RecRFQ: Record "RFQ Header";
@@ -88,9 +90,12 @@ pageextension 50300 RFQ_Card_Ext extends "RFQ Card"
                     trigger OnAction()
                     var
                         AppEntr: Record "Approval Entry";
+                        RecRFQ: Record "RFQ Header";
                     begin
                         if ApprovalsMgmtCut.CheckRFQApprovalWorkflowEnable(Rec) then
                             ApprovalsMgmtCut.OnSendRFQForApproval(Rec);
+
+
                         //
                         //  IF rec."Approval Status" = rec."Approval Status"::"Pending Approval" then begin
                         // AppEntr.Reset();
@@ -117,9 +122,20 @@ pageextension 50300 RFQ_Card_Ext extends "RFQ Card"
                     PromotedOnly = true;
                     trigger OnAction()
                     var
+                        RecRFQ: Record "RFQ Header";
                     begin
                         ApprovalsMgmtCut.OnCancelRFQForApproval(rec);
+                        // //PCPL-25/240323
+                        // RecRFQ.Reset();
+                        // RecRFQ.SetRange("No.", rec."No.");
+                        // RecRFQ.SetRange("Approval Status", RecRFQ."Approval Status"::"Pending Approval");
+                        // IF RecRFQ.FindFirst() then begin
+                        //     RecRFQ."Approval Status" := RecRFQ."Approval Status"::Open;
+                        //     RecRFQ.Modify();
+                        // end;
+                        // //PCPL-25/240323                        
                     end;
+
                 }
             }
         }
