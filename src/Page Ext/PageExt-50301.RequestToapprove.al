@@ -7,7 +7,7 @@ pageextension 50301 "Request To Approve_ext" extends "Requests to Approve"
 
     actions
     {
-        // Add changes to page actions here
+        // Add changes to page actions here for Ststus not changed for RFQ Card as remain Pending for Approval
         //PCPL-25/240323
         modify(Approve)
         {
