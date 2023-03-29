@@ -29,7 +29,6 @@ pageextension 50301 "Request To Approve_ext" extends "Requests to Approve"
                         RecRFQ.Modify();
                     end;
                 end;
-
             end;
         }
         //PCPL-25/240323
