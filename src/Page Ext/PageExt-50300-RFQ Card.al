@@ -179,6 +179,5 @@ pageextension 50300 RFQ_Card_Ext extends "RFQ Card"
         CanRequestApproavlForFlow: Boolean;
         NoworkFlowEnableErr: Label 'Workflow is enabled you can not release the order.';
         CancelAppEnable: Boolean;
-
-
+        Myint: Page 8885;
 }
