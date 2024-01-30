@@ -13,7 +13,7 @@ pageextension 50300 RFQ_Card_Ext extends "RFQ Card"
             {
                 action(Approve)
                 {
-                    Visible = false;        //PCPL-25/240323
+                    Visible = false;        ///PCPL-25/240323
                     image = Approval;
                     Promoted = true;
                     PromotedCategory = process;
